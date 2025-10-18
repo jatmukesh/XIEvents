@@ -7,28 +7,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 // AUTH MODELS
 
 model User {
-  id            Int       @id @default(autoincrement())
-  name          String?
-  email         String    @unique
-  password      String
+  id       Int     @id @default(autoincrement())
+  name     String?
+  email    String  @unique
+  password String
 
   accounts Account[]
   sessions Session[]
 
   // Relations for your app
-  fests     Fest[]        @relation("FestCreatedBy")
-  events    Event[]       @relation("EventCreatedBy")
-  photos    Photo[]       @relation("PhotoUploadedBy")
-  drafts    Draft[]       @relation("DraftCreatedBy")
-  sentMails MailLog[]     @relation("MailLogSentBy")
+  fests     Fest[]    @relation("FestCreatedBy")
+  events    Event[]   @relation("EventCreatedBy")
+  photos    Photo[]   @relation("PhotoUploadedBy")
+  drafts    Draft[]   @relation("DraftCreatedBy")
+  sentMails MailLog[] @relation("MailLogSentBy")
 }
 
 model Account {
-  id                Int       @id @default(autoincrement())
+  id                Int     @id @default(autoincrement())
   userId            Int
   type              String
   provider          String
@@ -66,7 +65,6 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-
 // APP MODELS
 
 model Fest {
@@ -75,7 +73,7 @@ model Fest {
   type          String
   created_by_id Int
 
-  created_by User  @relation("FestCreatedBy", fields: [created_by_id], references: [id])
+  created_by User    @relation("FestCreatedBy", fields: [created_by_id], references: [id])
   events     Event[]
 
   @@index([created_by_id])
@@ -85,24 +83,41 @@ model Event {
   id            Int      @id @default(autoincrement())
   fest_id       Int
   name          String
+  description   String
   date          DateTime
   venue         String
   created_by_id Int
 
-  fest        Fest   @relation(fields: [fest_id], references: [id])
-  created_by  User   @relation("EventCreatedBy", fields: [created_by_id], references: [id])
+  fest        Fest          @relation(fields: [fest_id], references: [id])
+  created_by  User          @relation("EventCreatedBy", fields: [created_by_id], references: [id])
   winners     Winner[]
   photos      Photo[]
+  Participant Participant[]
 
   @@index([fest_id])
   @@index([created_by_id])
 }
 
+model Participant {
+  id       Int    @id @default(autoincrement())
+  event_id Int
+  name     String
+  class_id Int
+  email    String
+
+  event Event @relation(fields: [event_id], references: [id])
+  class Class @relation(fields: [class_id], references: [id])
+
+  @@unique([event_id, email]) // ensures a participant can’t register twice for the same event
+  @@index([event_id])
+  @@index([class_id])
+}
+
 model Winner {
-  id         Int    @id @default(autoincrement())
-  event_id   Int
-  class_id   Int
-  position   String  // Gold / Silver / Bronze
+  id       Int    @id @default(autoincrement())
+  event_id Int
+  class_id Int
+  position String // Gold / Silver / Bronze
 
   event Event @relation(fields: [event_id], references: [id])
   class Class @relation(fields: [class_id], references: [id])
@@ -119,50 +134,51 @@ model Department {
 }
 
 model Class {
-  id       Int    @id @default(autoincrement())
-  dept_id  Int
-  year     String
-  section  String
+  id      Int    @id @default(autoincrement())
+  dept_id Int
+  year    String
+  section String
 
-  department Department @relation(fields: [dept_id], references: [id])
-  winners    Winner[]
+  department  Department    @relation(fields: [dept_id], references: [id])
+  winners     Winner[]
+  Participant Participant[]
 
   @@index([dept_id])
 }
 
 model Photo {
-  id           Int    @id @default(autoincrement())
-  event_id     Int
-  caption      String
-  uploaded_by  Int
-  image_url    String
+  id          Int    @id @default(autoincrement())
+  event_id    Int
+  caption     String
+  uploaded_by Int
+  image_url   String
 
-  event   Event @relation(fields: [event_id], references: [id])
-  uploader User @relation("PhotoUploadedBy", fields: [uploaded_by], references: [id])
+  event    Event @relation(fields: [event_id], references: [id])
+  uploader User  @relation("PhotoUploadedBy", fields: [uploaded_by], references: [id])
 
   @@index([event_id])
   @@index([uploaded_by])
 }
 
 model Draft {
-  id             Int    @id @default(autoincrement())
-  title          String
-  body           String
-  created_by_id  Int
+  id            Int    @id @default(autoincrement())
+  title         String
+  body          String
+  created_by_id Int
 
-  created_by User     @relation("DraftCreatedBy", fields: [created_by_id], references: [id])
+  created_by User      @relation("DraftCreatedBy", fields: [created_by_id], references: [id])
   mailLogs   MailLog[]
 
   @@index([created_by_id])
 }
 
 model MailLog {
-  id          Int @id @default(autoincrement())
-  draft_id    Int
-  sent_by_id  Int
+  id         Int @id @default(autoincrement())
+  draft_id   Int
+  sent_by_id Int
 
-  draft Draft @relation(fields: [draft_id], references: [id])
-  sender User @relation("MailLogSentBy", fields: [sent_by_id], references: [id])
+  draft  Draft @relation(fields: [draft_id], references: [id])
+  sender User  @relation("MailLogSentBy", fields: [sent_by_id], references: [id])
 
   @@index([draft_id])
   @@index([sent_by_id])
