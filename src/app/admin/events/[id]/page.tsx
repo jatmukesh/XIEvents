@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
+import { TextEditor } from "@/components";
 
 // ✅ Dynamic import to avoid SSR crash
 const FroalaEditor = dynamic(() => import("react-froala-wysiwyg"), {
@@ -68,117 +69,9 @@ export default function EventDesc() {
           Event Description / Report
         </h2>
 
-       <FroalaEditor
-        tag="textarea"
-        model={model}
-        onModelChange={setModel}
-        config={{
-            placeholderText:
-            "Write detailed event summary, highlights, winners, and post-event notes...",
-            theme: "gray",
-            heightMin: 300,
-            heightMax: 600,
-            charCounterCount: true,
-            quickInsertTags: ["image", "table", "ul", "ol"],
-            toolbarSticky: true,
-            toolbarButtons: {
-            moreText: {
-                buttons: [
-                "bold",
-                "italic",
-                "underline",
-                "strikeThrough",
-                "subscript",
-                "superscript",
-                "fontFamily",
-                "fontSize",
-                "textColor",
-                "backgroundColor",
-                "clearFormatting",
-                ],
-            },
-            moreParagraph: {
-                buttons: [
-                "alignLeft",
-                "alignCenter",
-                "alignRight",
-                "alignJustify",
-                "formatOL",
-                "formatUL",
-                "paragraphFormat",
-                "lineHeight",
-                "outdent",
-                "indent",
-                "quote",
-                ],
-            },
-            moreRich: {
-                buttons: [
-                "insertLink",
-                "insertImage",
-                "insertVideo",
-                "insertFile",
-                "insertTable",
-                "emoticons",
-                "specialCharacters",
-                "embedly",
-                "insertHR",
-                ],
-            },
-            moreMisc: {
-                buttons: [
-                "undo",
-                "redo",
-                "fullscreen",
-                "selectAll",
-                "print",
-                "html",
-                "help",
-                ],
-                align: "right",
-                buttonsVisible: 4,
-            },
-            },
-            // 🔌 Enable all Froala plugins
-            pluginsEnabled: [
-            "align",
-            "charCounter",
-            "codeBeautifier",
-            "codeView",
-            "colors",
-            "draggable",
-            "emoticons",
-            "entities",
-            "file",
-            "fontFamily",
-            "fontSize",
-            "fullscreen",
-            "image",
-            "imageTUI",
-            "inlineClass",
-            "inlineStyle",
-            "lineBreaker",
-            "link",
-            "lists",
-            "paragraphFormat",
-            "paragraphStyle",
-            "quickInsert",
-            "quote",
-            "save",
-            "table",
-            "url",
-            "video",
-            "wordPaste",
-            ],
-            // 🧭 image/file upload paths (customize later)
-            imageUpload: false,
-            fileUpload: false,
-            videoUpload: false,
-            attribution: false, // hide Froala branding
-        }}
+        <TextEditor
+          initialContent="<p>Customize your email content here...</p>"
         />
-
-
         <div className="flex justify-end mt-6">
           <button
             onClick={() => alert("Event Description Saved")}
