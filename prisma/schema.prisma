@@ -1,0 +1,103 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  role      String
+  email     String   @unique
+
+  // Relations
+  fests     Fest[]        @relation("FestCreatedBy")
+  events    Event[]       @relation("EventCreatedBy")
+  photos    Photo[]       @relation("PhotoUploadedBy")
+  drafts    Draft[]       @relation("DraftCreatedBy")
+  sentMails MailLog[]     @relation("MailLogSentBy")
+}
+
+model Fest {
+  id            Int    @id @default(autoincrement())
+  name          String
+  type          String
+  created_by_id Int
+
+  created_by User  @relation("FestCreatedBy", fields: [created_by_id], references: [id])
+  events     Event[]
+}
+
+model Event {
+  id            Int      @id @default(autoincrement())
+  fest_id       Int
+  name          String
+  date          DateTime
+  venue         String
+  created_by_id Int
+
+  fest        Fest   @relation(fields: [fest_id], references: [id])
+  created_by  User   @relation("EventCreatedBy", fields: [created_by_id], references: [id])
+  winners     Winner[]
+  photos      Photo[]
+}
+
+model Winner {
+  id         Int    @id @default(autoincrement())
+  event_id   Int
+  class_id   Int
+  position   String  // Gold / Silver / Bronze
+
+  event Event @relation(fields: [event_id], references: [id])
+  class Class @relation(fields: [class_id], references: [id])
+}
+
+model Department {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  classes Class[]
+}
+
+model Class {
+  id       Int    @id @default(autoincrement())
+  dept_id  Int
+  year     String
+  section  String
+
+  department Department @relation(fields: [dept_id], references: [id])
+  winners    Winner[]
+}
+
+model Photo {
+  id           Int    @id @default(autoincrement())
+  event_id     Int
+  caption      String
+  uploaded_by  Int
+  image_url    String
+
+  event   Event @relation(fields: [event_id], references: [id])
+  uploader User @relation("PhotoUploadedBy", fields: [uploaded_by], references: [id])
+}
+
+model Draft {
+  id             Int    @id @default(autoincrement())
+  title          String
+  body           String
+  created_by_id  Int
+
+  created_by User     @relation("DraftCreatedBy", fields: [created_by_id], references: [id])
+  mailLogs   MailLog[]
+}
+
+model MailLog {
+  id          Int @id @default(autoincrement())
+  draft_id    Int
+  sent_by_id  Int
+
+  draft Draft @relation(fields: [draft_id], references: [id])
+  sender User @relation("MailLogSentBy", fields: [sent_by_id], references: [id])
+}
