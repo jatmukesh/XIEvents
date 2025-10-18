@@ -110,6 +110,7 @@ export default function EventsPage() {
               <tr>
                 <th className="px-6 py-3 text-left">Event ID</th>
                 <th className="px-6 py-3 text-left">Event Name</th>
+                <th className="px-6 py-3 text-left">Type</th>
                 <th className="px-6 py-3 text-left">Date</th>
                 <th className="px-6 py-3 text-left">Venue</th>
                 <th className="px-6 py-3 text-left">Created By</th>

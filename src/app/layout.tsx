@@ -23,7 +23,7 @@ export default function RootLayout({
   const pathname = usePathname();
 
   // ✅ Define all routes where navbar should NOT appear
-  const hiddenNavbarRoutes = ["/admin", "/login", "/signup"];
+  const hiddenNavbarRoutes = ["/admin"];
 
   // ✅ Check if current path starts with any of those
   const hideNavbar = hiddenNavbarRoutes.some((route) =>

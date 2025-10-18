@@ -1,3 +1,4 @@
 import HeroSection from "./HeroSection";
 import Navbar from "./Navbar";
-export {HeroSection,Navbar}
+import TextEditor from "./TextEditor";
+export {HeroSection,Navbar,TextEditor}

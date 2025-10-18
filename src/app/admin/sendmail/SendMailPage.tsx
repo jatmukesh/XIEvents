@@ -7,6 +7,7 @@ import { Plus, Edit3, Trash2, Mail } from "lucide-react";
 
 export default function SendMailPage() {
   const router = useRouter();
+
   const [drafts, setDrafts] = useState([
     { id: 1, title: "Welcome to Spandan", subject: "Cultural Fest - Spandan Announcement" },
     { id: 2, title: "Transmission Launch", subject: "Technical Fest Begins!" },
@@ -17,7 +18,9 @@ export default function SendMailPage() {
   const handleAdd = () => alert("Add new draft");
   const handleEdit = (id: number) => alert(`Edit draft ${id}`);
   const handleDelete = (id: number) => {
-    if (confirm("Delete this draft?")) setDrafts(drafts.filter((d) => d.id !== id));
+    if (confirm("Delete this draft?")) {
+      setDrafts(drafts.filter((d) => d.id !== id));
+    }
   };
 
   return (
@@ -45,7 +48,7 @@ export default function SendMailPage() {
         </motion.button>
       </div>
 
-      {/* Draft List (Vertical Column Style) */}
+      {/* Draft List (Column Layout) */}
       <div className="flex flex-col divide-y divide-gray-200 rounded-lg border border-gray-200 bg-white shadow-sm">
         {drafts.map((draft, index) => (
           <motion.div
@@ -54,7 +57,7 @@ export default function SendMailPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.05 }}
             className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 hover:bg-gray-50 transition-all cursor-pointer"
-            onClick={() => router.push(`/admin/sendmail/${draft.id}`)}
+            onClick={() => router.push(`/admin/sendmail/${draft.id}`)} // ✅ navigate to draft editor
           >
             {/* Draft Info */}
             <div className="flex-1">
@@ -63,22 +66,19 @@ export default function SendMailPage() {
             </div>
 
             {/* Actions */}
-            <div className="flex gap-3 mt-3 sm:mt-0">
+            <div
+              className="flex gap-3 mt-3 sm:mt-0"
+              onClick={(e) => e.stopPropagation()} // ✅ prevent navigation when clicking icons
+            >
               <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleEdit(draft.id);
-                }}
+                onClick={() => handleEdit(draft.id)}
                 className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-all"
                 title="Edit"
               >
                 <Edit3 size={18} className="text-yellow-600" />
               </button>
               <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDelete(draft.id);
-                }}
+                onClick={() => handleDelete(draft.id)}
                 className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-all"
                 title="Delete"
               >

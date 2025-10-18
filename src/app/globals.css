@@ -1,4 +1,24 @@
 @import "tailwindcss";
+@import "froala-editor/css/froala_editor.pkgd.min.css";
+@import "froala-editor/css/froala_style.min.css";
+/* --- Froala core styles --- */
+@import "froala-editor/css/froala_editor.pkgd.min.css";
+@import "froala-editor/css/froala_style.min.css";
+
+/* --- Optional Froala themes (choose one) --- */
+@import "froala-editor/css/themes/gray.min.css";
+
+/* --- Optional plugin CSS for icons, code view, colors, etc. --- */
+@import "froala-editor/css/plugins/code_view.min.css";
+@import "froala-editor/css/plugins/colors.min.css";
+@import "froala-editor/css/plugins/emoticons.min.css";
+@import "froala-editor/css/plugins/image.min.css";
+@import "froala-editor/css/plugins/file.min.css";
+@import "froala-editor/css/plugins/fullscreen.min.css";
+@import "froala-editor/css/plugins/line_breaker.min.css";
+@import "froala-editor/css/plugins/quick_insert.min.css";
+@import "froala-editor/css/plugins/table.min.css";
+@import "froala-editor/css/plugins/video.min.css";
 
 :root {
   --background: #ffffff;
