@@ -20,18 +20,10 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         if (!credentials?.email || !credentials.password) return null;
 
-        // Fetch user from Prisma (include password explicitly)
-        const user = (await prisma.user.findUnique({
+        const user = await prisma.user.findUnique({
           where: { email: credentials.email },
-        })) as unknown as {
-          id: number;
-          name: string | null;
-          role: string;
-          email: string | null;
-          password?: string | null;
-        };
+        });
 
-        // Verify password
         if (!user || !user.password) return null;
 
         const isValid = await bcrypt.compare(
@@ -40,9 +32,9 @@ export const authOptions: NextAuthOptions = {
         );
         if (!isValid) return null;
 
-        // Return user without password (NextAuth User shape)
+        // Must include id for JWT
         const { password, ...safeUser } = user;
-        return safeUser as any;
+        return safeUser; // id, name, email, role
       },
     }),
   ],
@@ -50,16 +42,23 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
   callbacks: {
-    // Include id in the session object
-    async session({ session, user }) {
+    // Add user.id and role to the JWT token
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    // Include id and role in session.user
+    async session({ session, token }) {
       if (session.user) {
-        session.user.id = Number(user.id); // number
+        session.user.id = token.id as number;
       }
       return session;
     },
   },
   pages: {
-    signIn: "/auth/signin",
+    signIn: "/login",
   },
   secret: process.env.NEXTAUTH_SECRET,
 };

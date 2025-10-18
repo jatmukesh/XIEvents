@@ -1,6 +1,5 @@
 "use client"; // this layout will be a client component so we can use usePathname()
 
-import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components";
@@ -15,11 +14,6 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
-
-export const metadata: Metadata = {
-  title: "XIEvents",
-  description: "XIE college events",
-};
 
 export default function RootLayout({
   children,
