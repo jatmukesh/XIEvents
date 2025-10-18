@@ -116,12 +116,7 @@ export default function Home() {
           >
             Explore Fests <ArrowRight size={18} />
           </Link>
-          <Link
-            href="/medal-tally"
-            className="px-6 py-3 bg-transparent border border-gray-300 rounded-lg font-semibold hover:bg-gray-200 hover:text-black transition-all inline-flex items-center gap-2"
-          >
-            View Medal Tally <Medal size={18} />
-          </Link>
+        
         </motion.div>
       </section>
 

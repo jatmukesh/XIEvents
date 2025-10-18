@@ -10,7 +10,7 @@ const Navbar = () => {
           href="/"
           className="text-xl md:text-2xl font-bold text-blue-600 hover:text-blue-700 transition-colors"
         >
-          XIE Council
+          XIEvents
         </Link>
 
         {/* Nav Links */}

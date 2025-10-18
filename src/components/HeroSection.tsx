@@ -76,7 +76,7 @@ export default function HeroSection() {
           <motion.a
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            href="/fests"
+            href="/events"
             className="px-6 py-3 bg-blue-500 hover:bg-blue-600 rounded-lg text-lg font-medium shadow-md hover:shadow-blue-500/50 transition-all"
           >
             View Fests
