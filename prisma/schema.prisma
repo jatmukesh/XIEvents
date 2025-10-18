@@ -7,19 +7,69 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  role      String
-  email     String   @unique
 
-  // Relations
+// AUTH MODELS
+
+model User {
+  id            Int       @id @default(autoincrement())
+  name          String?
+  email         String    @unique
+  password      String
+  emailVerified DateTime?
+  image         String?
+
+  accounts Account[]
+  sessions Session[]
+
+  // Relations for your app
   fests     Fest[]        @relation("FestCreatedBy")
   events    Event[]       @relation("EventCreatedBy")
   photos    Photo[]       @relation("PhotoUploadedBy")
   drafts    Draft[]       @relation("DraftCreatedBy")
   sentMails MailLog[]     @relation("MailLogSentBy")
 }
+
+model Account {
+  id                Int       @id @default(autoincrement())
+  userId            Int
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       Int
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+
+// APP MODELS
 
 model Fest {
   id            Int    @id @default(autoincrement())
@@ -29,6 +79,8 @@ model Fest {
 
   created_by User  @relation("FestCreatedBy", fields: [created_by_id], references: [id])
   events     Event[]
+
+  @@index([created_by_id])
 }
 
 model Event {
@@ -43,6 +95,9 @@ model Event {
   created_by  User   @relation("EventCreatedBy", fields: [created_by_id], references: [id])
   winners     Winner[]
   photos      Photo[]
+
+  @@index([fest_id])
+  @@index([created_by_id])
 }
 
 model Winner {
@@ -53,6 +108,9 @@ model Winner {
 
   event Event @relation(fields: [event_id], references: [id])
   class Class @relation(fields: [class_id], references: [id])
+
+  @@index([event_id])
+  @@index([class_id])
 }
 
 model Department {
@@ -70,6 +128,8 @@ model Class {
 
   department Department @relation(fields: [dept_id], references: [id])
   winners    Winner[]
+
+  @@index([dept_id])
 }
 
 model Photo {
@@ -81,6 +141,9 @@ model Photo {
 
   event   Event @relation(fields: [event_id], references: [id])
   uploader User @relation("PhotoUploadedBy", fields: [uploaded_by], references: [id])
+
+  @@index([event_id])
+  @@index([uploaded_by])
 }
 
 model Draft {
@@ -91,6 +154,8 @@ model Draft {
 
   created_by User     @relation("DraftCreatedBy", fields: [created_by_id], references: [id])
   mailLogs   MailLog[]
+
+  @@index([created_by_id])
 }
 
 model MailLog {
@@ -100,4 +165,7 @@ model MailLog {
 
   draft Draft @relation(fields: [draft_id], references: [id])
   sender User @relation("MailLogSentBy", fields: [sent_by_id], references: [id])
+
+  @@index([draft_id])
+  @@index([sent_by_id])
 }
