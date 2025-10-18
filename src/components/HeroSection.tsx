@@ -15,7 +15,7 @@ export default function HeroSection() {
         playsInline
       >
         <source
-          src="https://cdn.pixabay.com/video/2020/09/16/50109-459915579_large.mp4"
+          src="https://videos.pexels.com/video-files/2941105/2941105-uhd_2732_1440_24fps.mp4"
           type="video/mp4"
         />
         Your browser does not support the video tag.

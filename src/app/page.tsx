@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
-import { HeroSection } from "@/components";
+import { HeroSection ,Navbar} from "@/components";
 
 export default function Home() {
   return (
