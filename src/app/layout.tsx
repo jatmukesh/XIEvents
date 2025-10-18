@@ -1,6 +1,5 @@
 "use client"; // this layout will be a client component so we can use usePathname()
 
-import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components";
@@ -16,11 +15,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "XIEvents",
-  description: "XIE college events",
-};
-
 export default function RootLayout({
   children,
 }: {
@@ -29,7 +23,7 @@ export default function RootLayout({
   const pathname = usePathname();
 
   // ✅ Define all routes where navbar should NOT appear
-  const hiddenNavbarRoutes = ["/admin", "/login", "/signup"];
+  const hiddenNavbarRoutes = ["/admin"];
 
   // ✅ Check if current path starts with any of those
   const hideNavbar = hiddenNavbarRoutes.some((route) =>

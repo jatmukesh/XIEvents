@@ -3,7 +3,16 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
-import { Search, Eye, Edit3, Trash2, CalendarDays, MapPin, User } from "lucide-react";
+import {
+  Search,
+  Eye,
+  Edit3,
+  Trash2,
+  CalendarDays,
+  MapPin,
+  User,
+  Tag,
+} from "lucide-react";
 
 export default function EventsPage() {
   const [search, setSearch] = useState("");
@@ -12,6 +21,7 @@ export default function EventsPage() {
   const events = Array.from({ length: 20 }).map((_, i) => ({
     id: i + 1,
     name: `Event ${i + 1} - ${i % 2 === 0 ? "CodeSprint" : "TechTalk"}`,
+    type: i % 3 === 0 ? "Technical" : i % 3 === 1 ? "Cultural" : "Sports",
     date: `2025-0${(i % 12) + 1}-15`,
     venue: i % 2 === 0 ? "Main Auditorium" : "Seminar Hall",
     createdBy: i % 2 === 0 ? "Admin" : "Faculty",
@@ -61,6 +71,7 @@ export default function EventsPage() {
               <tr>
                 <th className="px-6 py-3 text-left">Event ID</th>
                 <th className="px-6 py-3 text-left">Event Name</th>
+                <th className="px-6 py-3 text-left">Type</th>
                 <th className="px-6 py-3 text-left">Date</th>
                 <th className="px-6 py-3 text-left">Venue</th>
                 <th className="px-6 py-3 text-left">Created By</th>
@@ -76,6 +87,7 @@ export default function EventsPage() {
                 >
                   <td className="px-6 py-4">{event.id}</td>
                   <td className="px-6 py-4 font-medium">{event.name}</td>
+                  <td className="px-6 py-4">{event.type}</td>
                   <td className="px-6 py-4">{event.date}</td>
                   <td className="px-6 py-4">{event.venue}</td>
                   <td className="px-6 py-4">{event.createdBy}</td>
@@ -106,7 +118,7 @@ export default function EventsPage() {
               ))}
               {filteredEvents.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="text-center text-gray-500 py-8 text-sm">
+                  <td colSpan={7} className="text-center text-gray-500 py-8 text-sm">
                     No events found.
                   </td>
                 </tr>
@@ -138,6 +150,10 @@ export default function EventsPage() {
 
               <div className="flex flex-col gap-1 text-sm text-gray-600 mb-3">
                 <div className="flex items-center gap-2">
+                  <Tag size={15} className="text-indigo-500" />
+                  <span>{event.type}</span>
+                </div>
+                <div className="flex items-center gap-2">
                   <CalendarDays size={15} className="text-blue-500" />
                   <span>{event.date}</span>
                 </div>
@@ -151,7 +167,9 @@ export default function EventsPage() {
                 </div>
               </div>
 
-              <p className="text-gray-500 text-sm mb-3 line-clamp-2">{event.desc}</p>
+              <p className="text-gray-500 text-sm mb-3 line-clamp-2">
+                {event.desc}
+              </p>
 
               {/* Action Buttons */}
               <div className="flex justify-end gap-3">

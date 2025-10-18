@@ -16,7 +16,7 @@ import {
 // import your subpages
 import EventsPage from "./sections/EventsPage";
 import GalleryPage from "./sections/GalleryPage";
-import SendMailPage from "./sections/SendMailPage";
+import SendMailPage from "./sendmail/SendMailPage";
 import AnalyticsPage from "./sections/AnalyticsPage";
 import ProfilePage from "./sections/ProfilePage";
 import LogoutPage from "./sections/LogoutPage";
