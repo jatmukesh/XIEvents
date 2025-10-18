@@ -11,15 +11,19 @@ import {
   LogOut,
   Menu,
   X,
+  UserPlus,
+  Trophy,
 } from "lucide-react";
 
-// import your subpages
+// import subpages
 import EventsPage from "./sections/EventsPage";
 import GalleryPage from "./sections/GalleryPage";
 import SendMailPage from "./sendmail/SendMailPage";
 import AnalyticsPage from "./sections/AnalyticsPage";
 import ProfilePage from "./sections/ProfilePage";
 import LogoutPage from "./sections/LogoutPage";
+import AddAdminPage from "./sections/AddAdminPage";
+import ManageWinnersPage from "./sections/ManageWinnersPage";
 
 export default function Page() {
   const [active, setActive] = useState("Events");
@@ -30,6 +34,8 @@ export default function Page() {
     { name: "Gallery", icon: <ImageIcon size={20} /> },
     { name: "Send Mail", icon: <Mail size={20} /> },
     { name: "Analytics", icon: <BarChart3 size={20} /> },
+    { name: "Manage Winners", icon: <Trophy size={20} /> },
+    { name: "Add Admin", icon: <UserPlus size={20} /> },
     { name: "Profile", icon: <User size={20} /> },
     { name: "Logout", icon: <LogOut size={20} /> },
   ];
@@ -49,6 +55,10 @@ export default function Page() {
         return <ProfilePage />;
       case "Logout":
         return <LogoutPage />;
+      case "Add Admin":
+        return <AddAdminPage />;
+      case "Manage Winners":
+        return <ManageWinnersPage />;
       default:
         return null;
     }
